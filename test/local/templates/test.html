@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>prueba</h1>
+    <form id="formTest" method="post">
+        {% csrf_token %}
+        <label for="name">
+            nombre
+        </label>
+        <input type="text" name="nombre" id="name">
+        <input type="submit" value="Enviar">
+    </form>
+    <script>
+        
+        document.addEventListener("DOMContentLoaded",function(){
+            if(localStorage.length !== 0)
+            {
+                alert("Data sin guardar")
+                let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                fetch('/',{method:"POST",body:localStorage.getItem("data"),headers:{'Accept': 'application/json','Content-type':'application/json; charset=UTF-8', 'X-CSRFToken': token}}).then(
+                    res => {
+                        res.json()
+                    localStorage.clear()}
+                )
+            }
+        })
+
+        formDom = document.querySelector("#formTest")
+        formDom.addEventListener('submit',(e)=>{
+            alert("procesando del DOM")
+            let data = {"nombre":"paco"}    
+            localStorage.setItem("data",JSON.stringify(data))
+
+        }) 
+    </script>
+</body>
+</html>
